@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Custom Page Template
+ * Template Name: Custom Page With Image Template
  *
  * When active, by adding the heading above and providing a custom name
  * this template becomes available in a drop-down panel in the editor.
@@ -15,7 +15,6 @@
 get_header(); ?>
 
 	<main id="primary" class="site-main">
-
 		<?php
 		while ( have_posts() ) :
 			the_post();
@@ -26,7 +25,8 @@ get_header(); ?>
 			 * At some point, override functionality should be built in similar to the template part below.
 			 */
 			wp_print_styles( array( 'wprig-content' ) ); // Note: If this was already done it will be skipped.
-
+		?>
+		<?php
 			get_template_part( 'template-parts/content', 'page' );
 
 		endwhile; // End of the loop.

@@ -385,3 +385,12 @@ require get_template_directory() . '/inc/customizer.php';
  * @link https://developers.google.com/web/fundamentals/performance/lazy-loading-guidance/images-and-video/
  */
 require get_template_directory() . '/pluggable/lazyload/lazyload.php';
+/**
+ * Update ACF to v5
+ */
+define( 'ACF_EARLY_ACCESS', '5' );
+// add_action('wp_head', 'show_template');
+// function show_template() {
+//     global $template;
+//     echo basename($template);
+// }
