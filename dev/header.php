@@ -80,7 +80,7 @@
 				</div>
 			</nav><!-- #site-navigation -->
 			</div><!-- .site-branding -->
-			<?php if ( has_header_image() and !is_page_template ( 'dev/page-with-image.php' )) { ?>
+			<?php if ( has_header_image() and !is_page_template ( 'page-with-image.php' )) { ?>
 				<figure class="header-image" id="header-image">
 					<?php the_header_image_tag(); ?>
 				</figure>
