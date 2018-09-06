@@ -5,6 +5,7 @@
  * @link https://developer.wordpress.org/themes/functionality/custom-headers/
  *
  * @package wprig
+ * last day 6/09/2018
  */
 
 /**
