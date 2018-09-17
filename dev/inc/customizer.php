@@ -11,10 +11,21 @@
  * @param WP_Customize_Manager $wp_customize Theme Customizer object.
  */
 function wprig_customize_register( $wp_customize ) {
-	$wp_customize->get_setting( 'blogname' )->transport         = 'postMessage';
-	$wp_customize->get_setting( 'blogdescription' )->transport  = 'postMessage';
-	$wp_customize->get_setting( 'header_textcolor' )->transport = 'postMessage';
-
+	// Add the theme panel.
+	// $wp_customize->add_panel(
+	// 	'theme',
+	// 	array(
+	// 		'title'    => esc_html__( 'Theme Settings Front Page', 'wprig' ),
+	// 		'priority' => 100
+	// 	)
+	// );
+	/** Load diferent part of front-page customizer */
+	require_once( get_template_directory() . '/inc/settings-front-page-featured.php' );
+	$wp_customize->get_setting( 'blogname' )->transport         	= 'postMessage';
+	$wp_customize->get_setting( 'blogdescription' )->transport  	= 'postMessage';
+	$wp_customize->get_setting( 'header_textcolor' )->transport 	= 'postMessage';
+	$wp_customize->get_setting( 'featured_area_title' )->transport  = 'postMessage';
+	
 	if ( isset( $wp_customize->selective_refresh ) ) {
 		$wp_customize->selective_refresh->add_partial(
 			'blogname', array(
@@ -28,6 +39,13 @@ function wprig_customize_register( $wp_customize ) {
 				'render_callback' => 'wprig_customize_partial_blogdescription',
 			)
 		);
+		// Partial refresh for featured area title.
+		$wp_customize->selective_refresh->add_partial( 'featured_area_title', array(
+			'selector'            => '.front-page-featured-title',
+			'render_callback'     => function() {
+				return openlink_get_featured_area_title_html();
+			},
+		) );
 	}
 
 	/**
@@ -64,6 +82,7 @@ function wprig_customize_register( $wp_customize ) {
 	}
 }
 add_action( 'customize_register', 'wprig_customize_register' );
+
 
 /**
  * Render the site title for the selective refresh partial.

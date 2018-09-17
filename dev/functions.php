@@ -394,3 +394,14 @@ define( 'ACF_EARLY_ACCESS', '5' );
 //     global $template;
 //     echo basename($template);
 // }
+/**
+ * Register an nuw field Api Rest
+ */
+/**
+ * Limit the number of character to 35 
+ */
+function custom_excerpt_length( $length ) {
+	if ( is_front_page() )
+		return 35;
+}
+add_filter( 'excerpt_length', 'custom_excerpt_length', 200);

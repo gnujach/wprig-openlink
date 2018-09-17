@@ -14,7 +14,9 @@ get_header(); ?>
 		<?php
 		while ( have_posts() ) :
 			the_post();
-
+			$previos_post = get_previous_post();
+			echo get_the_permalink( $previos_post->ID );
+			die();
 			/*
 			* Include the component stylesheet for the content.
 			* This call runs only once on index and archive pages.

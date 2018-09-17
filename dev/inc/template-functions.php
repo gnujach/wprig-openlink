@@ -196,3 +196,184 @@ function wprig_add_nav_menu_aria_current( $atts, $item ) {
 }
 add_filter( 'nav_menu_link_attributes', 'wprig_add_nav_menu_aria_current', 10, 2 );
 add_filter( 'page_menu_link_attributes', 'wprig_add_nav_menu_aria_current', 10, 2 );
+
+/**
+ * Returns featured area title.
+ *
+ * @since  1.0.0
+ *
+ * @return string
+ */
+function openlink_get_featured_area_title() {
+	return openlink_get_theme_mod( 'featured_area_title', esc_html__( 'Products', 'checathlon' ) );
+}
+
+/**
+ * This is a wrapper function for core WP's `get_theme_mod()` function. Core doesn't
+ * provide a filter hook for the default value (useful for child themes). The purpose
+ * of this function is to provide that additional filter hook. To filter the final
+ * theme mod, use the core `theme_mod_{$name}` filter hook.
+ *
+ * @since  1.0.0
+ *
+ * @author    Justin Tadlock <justin@justintadlock.com>
+ * @copyright Copyright (c) 2013 - 2016, Justin Tadlock
+ * @link      http://themehybrid.com/themes/extant
+ * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ *
+ * @param     string $name    Theme mod ID.
+ * @param     mixed  $default Theme mod default.
+ * @return    mixed
+ */
+function openlink_get_theme_mod( $name, $default = false ) {
+	return get_theme_mod( $name, apply_filters( "checathlon_theme_mod_{$name}_default", $default ) );
+}
+/**
+ * Returns the default featured content theme mod in Front Page.
+ *
+ * @since  1.0.0
+ *
+ * @return string
+ */
+function openlink_get_fp_featured_content() {
+	// wp_die
+	return openlink_get_theme_mod( 'front_page_featured', 'select-pages' );
+}
+/**
+ * Returns featured pages selected from the Customizer.
+ *
+ * @since  1.0.0
+ *
+ * @return array
+ */
+function openlink_featured_pages() {
+
+	$k = 1;
+
+	// Set empty array of featured pages.
+	$openlink_featured_pages = array();
+
+	// How many pages to show.
+	$how_many_pages = openlink_how_many_selected_pages();
+
+	// Loop all the featured pages.
+	while ( $k <= absint ( $how_many_pages ) ) { // Begins the loop through found pages from customize settings.
+
+		$openlink_page_id = absint( get_theme_mod( 'featured_page_' . $k ) );
+
+			// Add selected featured pages in array.
+			if ( 0 !== $openlink_page_id || ! empty( $openlink_page_id ) ) { // Check if page is selected.
+				$openlink_featured_pages[] = $openlink_page_id;
+			}
+
+		$k++;
+
+	}
+
+	// Return featured pages.
+	return $openlink_featured_pages;
+}
+/**
+ * Returns the Front Page selected pages count.
+ *
+ * @since  1.0.0
+ *
+ * @return integer
+ */
+function openlink_how_many_selected_pages() {
+	return apply_filters( 'openlink_how_many_selected_pages', 8 );
+	// return 8;
+}
+/**
+ * Returns featured area title html.
+ *
+ * @since  1.0.0
+ *
+ * @return string
+ */
+function openlink_get_featured_area_title_html() {
+	if ( openlink_get_featured_area_title() ) {
+		return '<h2 class="front-page-featured-title front-page-title widget-title">' . esc_html( openlink_get_featured_area_title() ) . '</h2>';
+	}
+}
+/**
+ * Check if we're on Front Page template.
+ *
+ * @since  1.0.0
+ *
+ * @return boolean.
+ */
+function openlink_is_front_page_template() {
+	// wp_die ( "errors" );
+	// wp_die( is_page_template( 'templates/featured-page.php' ) || openlink_is_front_page() );
+	// return is_page_template( 'templates/featured-page.php' ) || openlink_is_front_page();
+	return is_front_page();
+}
+/**
+ * Check if we are on front page.
+ *
+ * @return bool
+ */
+function openlink_is_front_page() {
+	wp_die("error");
+	return ( ! is_home() && is_front_page() );
+}
+/**
+ * Get post thubmnail as background image.
+ *
+ * Uses openlink_post_background function.
+ */
+function openlink_get_bg_header( $args = array() ) {
+	$defaults = array(
+		'post_id' => get_the_ID(),
+		'size'    => 'medium',
+		'icon'    => 'pencil',
+	);
+	$args = wp_parse_args( $args, $defaults );
+
+	// Get featured image as post background image.
+	$openlink_bg = openlink_post_background( $args['size'] );
+
+	// Start markup.
+	$markup = '';
+
+	if ( has_post_thumbnail( $args['post_id'] ) ) :
+		$markup .= '<div class="entry-header-bg" style="background-image:url(' . esc_url( $openlink_bg ) . ');">';
+			$markup .= '<a class="entry-header-bg-link" href="' . esc_url( get_permalink() ) . '" rel="bookmark"><span class="screen-reader-text">' . esc_html__( 'Continue reading', 'wprig' ) . ' ' . get_the_title() . '</span></a>';
+	else :
+		$markup .= '<div class="entry-header-bg">';
+		$markup .= '<a class="entry-header-bg-link" href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . '&nbps;' . '<span class="screen-reader-text">' . esc_html__( 'Continue reading', 'checathlon' ) . ' ' . get_the_title() . '</span></a>';
+	endif;
+
+	$markup .= '</div>';
+
+	return $markup;
+}
+/**
+ * Display an optional post background.
+ *
+ * @since 1.0.0
+ */
+function openlink_post_background( $post_thumbnail = null, $id = null ) {
+
+	// Set default size.
+	if ( null === $post_thumbnail ) {
+		$post_thumbnail = 'post-thumbnail';
+	}
+
+	// Set default ID.
+	if ( null === $id ) {
+		$id = get_the_ID();
+	}
+
+	// Return post thumbnail url if it's set, else return false.
+	if ( has_post_thumbnail( $id ) ) {
+		$thumb_url_array = wp_get_attachment_image_src( get_post_thumbnail_id( $id ), esc_attr( $post_thumbnail ), true );
+		$bg              = $thumb_url_array[0];
+	} else {
+		$bg = false;
+	}
+
+	return $bg;
+
+}

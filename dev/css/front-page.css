@@ -2,7 +2,47 @@
  * Custom styles for the front-page.php template.
  */
 
-@media (--sidebar-query) {
+.entry-inner-wrapper {
+	background-color: #e1e1e1;
+	position: relative;
+	padding: 0;
+	margin-left: -6px;
+	margin-right: -6px;
+	width: calc(100% + 12px); /* 6 + 6 = 12px */
+}
+.entry-header-bg {
+	/* display: inline-block; */
+	background-color: #d4d4d4;
+	background-size: cover;
+	background-position: center;
+	height: 270px;
+	position: relative;
+	width: 100%;
+}
+a.entry-header-bg-link {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	transition: all 0.5s;
+}
+a.entry-header-bg-link:hover,
+a.entry-header-bg-link:focus,
+a.entry-header-bg-link:active {
+	background-color: rgba(59, 59, 59, 0.33);
+}
+.entry-inner {
+	width: 100%;
+	padding: 1rem;
+}
+.entry-header h1.entry-title {
+	font-size: 32px;
+	font-size: 2rem;
+	line-height: 1.4;
+	margin: 1em 0;
+}
+@media (--sidebar-query) {	
 	.site {
 		margin: 0 1em;
 		display: grid;
@@ -50,6 +90,12 @@
 		padding: 2rem 0 0;
 		border-top: 1px solid #111;
 		border-bottom: none;
+	}
+	.entry-inner-wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: column;
+		background-color: #fff;
 	}
 
 }

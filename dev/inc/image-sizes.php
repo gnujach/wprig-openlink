@@ -16,7 +16,6 @@
  */
 function wprig_content_image_sizes_attr( $sizes, $size ) {
 	$width = $size[0];
-
 	if ( 740 <= $width ) {
 		$sizes = '100vw';
 	}
@@ -24,7 +23,6 @@ function wprig_content_image_sizes_attr( $sizes, $size ) {
 	if ( is_active_sidebar( 'sidebar-1' ) ) {
 		$sizes = '(min-width: 960px) 75vw, 100vw';
 	}
-
 	return $sizes;
 }
 add_filter( 'wp_calculate_image_sizes', 'wprig_content_image_sizes_attr', 10, 2 );
@@ -45,6 +43,26 @@ function wprig_header_image_tag( $html, $header, $attr ) {
 }
 add_filter( 'get_header_image_tag', 'wprig_header_image_tag', 10, 3 );
 
+/**
+ * Undocumented function
+ *
+ * @param [type] $attr
+ * @param [type] $attachment
+ * @param [type] $size
+ * @return string
+ */
+function open_link_header_image_tag( $html, $header, $attr ) {
+	if ( is_page_template( 'page-with-image.php' )) {
+		if ( isset( $attr['src'] )) {
+			$img = get_field( 'header_image' );
+			if ( isset ( $img ))
+				$html = str_replace( $attr['src'], $img['url'], $html );
+		}			
+	}
+	// wp_die($attr['url']);
+	return $html;	
+}
+add_filter( 'get_header_image_tag', 'open_link_header_image_tag', 20, 3 );
 /**
  * Add custom image sizes attribute to enhance responsive image functionality
  * for post thumbnails.

@@ -17,16 +17,21 @@ get_header();
 wp_print_styles( array( 'wprig-content', 'wprig-front-page' ) ); // Note: If this was already done it will be skipped.
 
 ?>
+	<main id="products" class="site-main">
+	<?php
+		get_template_part( 'template-parts/content', 'featured-area' );
+	?>
+	</main>
 	<main id="primary" class="site-main">
 
 		<?php
 		while ( have_posts() ) :
 			the_post();
-
 			get_template_part( 'template-parts/content', get_post_type() );
-
 		endwhile; // End of the loop.
+		// Load featured area.
 		?>
+
 		<?php the_posts_navigation(); ?>
 
 	</main><!-- #primary -->

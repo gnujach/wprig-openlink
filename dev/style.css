@@ -837,6 +837,21 @@ textarea {
 .main-navigation .menu {
 	display: none;
 }
+
+
+.grid-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+}
+.grid-wrapper > .hentry {
+	padding-left: 3.75rem;
+	margin-bottom: 3.75rem;
+	width: 33.33%;
+}
+.entry-summery {
+	max-width: 740px;
+}
+
 /**
 Media para celulares verticales
 */
@@ -853,15 +868,23 @@ Media para celulares verticales
 	.site-branding{
 		flex-direction: column;
 	}
-	#header-image {
+	/* #header-image {
 		display: none;
-
+	} */
+	.header-image {
+		padding-top: 10px;
 	}
 	#site-navigation {
 		margin: auto;
 	}
 	.menu-toggle {
 		margin: auto;
+	}
+	.grid-wrapper > .hentry {
+		padding-left: .75rem;
+		margin-bottom: 3.75rem;
+		padding-right: .75rem;
+		width: 100%;
 	}
 
 }
